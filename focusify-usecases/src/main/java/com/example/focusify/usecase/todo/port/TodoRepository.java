@@ -3,7 +3,6 @@ package com.example.focusify.usecase.todo.port;
 import com.example.focusify.domain.todo.Status;
 import com.example.focusify.domain.todo.Todo;
 import java.util.List;
-import java.util.Optional;
 
 public interface TodoRepository {
 
@@ -13,7 +12,9 @@ public interface TodoRepository {
 
   List<Todo> getAllTodos();
 
-  void deleteTodo(Todo todo);
+  Long countTodos();
+
+  void deleteTodo(Long id);
 
   Todo updateTodo(Todo todo);
 

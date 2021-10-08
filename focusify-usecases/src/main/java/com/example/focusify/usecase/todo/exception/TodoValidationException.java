@@ -1,12 +1,15 @@
 package com.example.focusify.usecase.todo.exception;
 
-public class TodoValidationException extends RuntimeException {
+import com.example.focusify.domain.exception.BusinessException;
+
+public class TodoValidationException extends BusinessException {
+
+  public TodoValidationException(String message) {
+    super(1, message);
+  }
 
   public TodoValidationException() {
-    super("Given Todo is invalid");
+    super(1, "Validation of TODO failed");
   }
 
-  public TodoValidationException(final String message) {
-    super(message);
-  }
 }

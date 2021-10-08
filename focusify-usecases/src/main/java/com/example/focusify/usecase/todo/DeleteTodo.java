@@ -11,8 +11,7 @@ public class DeleteTodo {
   }
 
   public void deleteTodo(Long id) {
-    var todoToDelete = this.todoRepository.getTodoById(id);
-    this.todoRepository.deleteTodo(todoToDelete);
+    this.todoRepository.deleteTodo(id);
   }
 
 }

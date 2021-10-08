@@ -25,4 +25,8 @@ public class GetTodo {
     return todoRepository.getTodosByStatus(status);
   }
 
+  public Long countTodos() {
+    return todoRepository.countTodos();
+  }
+
 }

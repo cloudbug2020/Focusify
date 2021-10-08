@@ -41,6 +41,10 @@ public class TodoController {
       return TodoWeb.toTodoWeb(todo);
   }
 
+  public Long countTodos() {
+    return getTodo.countTodos();
+  }
+
   public List<TodoWeb> getTodosByStatus(final Status status) {
     return getTodo.getTodosByStatus(status)
                   .stream()

@@ -1,5 +1,6 @@
 package com.example.focusify.adapter.db.panache;
 
+import com.example.focusify.adapter.controller.model.TodoWeb;
 import com.example.focusify.adapter.db.panache.model.TodoEntity;
 import com.example.focusify.domain.todo.Status;
 import com.example.focusify.domain.todo.Todo;
@@ -7,44 +8,56 @@ import com.example.focusify.usecase.todo.exception.TodoNotFoundException;
 import com.example.focusify.usecase.todo.port.TodoRepository;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import java.util.List;
-import java.util.Optional;
 
 public class PanacheTodoRepository implements TodoRepository, PanacheRepository<TodoEntity> {
 
   @Override
   public Todo getTodoById(Long id) {
-    final var foundTodo = find("id", id)
-        .stream()
-        .findFirst()
-        .orElseThrow(TodoNotFoundException::new);
+    long dbId = id;
+    final var foundTodo = findById(dbId);
 
-    return new Todo(foundTodo.id, foundTodo.title, foundTodo.description, foundTodo.status);
+    if (foundTodo != null) {
+      return new Todo(foundTodo.id, foundTodo.title, foundTodo.description, foundTodo.status);
+    } else {
+      throw new TodoNotFoundException("Todo with id=" + id + " not found");
+    }
+
+
   }
 
   @Override
   public List<Todo> getTodosByStatus(Status status) {
-    return find("status", status)
-        .stream()
+    return find("status", status).stream()
         .map(a -> new Todo(a.id, a.title, a.description, a.status))
-        .toList()
-        ;
+        .toList();
   }
 
   @Override
   public List<Todo> getAllTodos() {
-    return listAll()
-        .stream()
-        .map(a -> new Todo(a.id, a.title, a.description, a.status))
-        .toList()
-        ;
+    return listAll().stream().map(a -> new Todo(a.id, a.title, a.description, a.status)).toList();
   }
 
   @Override
-  public void deleteTodo(Todo todo) {}
+  public Long countTodos() {
+    return count();
+  }
+
+  @Override
+  public void deleteTodo(Long id) {
+    final var entityToDelete = findById(id);
+    delete(entityToDelete);
+  }
 
   @Override
   public Todo updateTodo(Todo todo) {
-    return null;
+    final var byId = findById(todo.getId());
+    if(byId == null) {
+      throw new TodoNotFoundException("Todo with id=" + todo.getId() + " not found");
+    }
+    byId.title = todo.getTitle();
+    byId.description = todo.getDescription();
+    byId.status = todo.getStatus();
+    return new Todo(byId.id, byId.title, byId.description, byId.status);
   }
 
   @Override

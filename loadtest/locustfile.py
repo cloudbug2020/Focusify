@@ -8,17 +8,31 @@ class ApiUser(HttpUser):
     @task(1)
     def post_todos(self):
      payload = {
-                   "title": "Postman Collection Title",
-                   "description": "Postman Collection Description",
+                   "title": "Locust Loadtest Title",
+                   "description": "Locust Loadtest Description",
                    "status": "TODO"
                }
 
      headers = {'content-type': 'application/json'}
 
-     r = self.client.post("/todos/", data=json.dumps(payload), headers=headers)
-     assert r.status_code == HTTPStatus.OK, "Unexpected response code: " + str(r.status_code)
+     r = self.client.post("/api/todos/", data=json.dumps(payload), headers=headers)
+     assert r.status_code == HTTPStatus.CREATED, "Unexpected response code: " + str(r.status_code)
+
+    @task(2)
+    def put_todos(self):
+      payload = {
+        "id": 1,
+        "title": "Updated Locust Loadtest Title",
+        "description": "Updated Locust Loadtest Description",
+        "status": "TODO"
+      }
+
+      headers = {'content-type': 'application/json'}
+
+      r = self.client.put("/api/todos", data=json.dumps(payload), headers=headers)
+      assert r.status_code == HTTPStatus.OK, "Unexpected response code: " + str(r.status_code)
 
     @task(3)
     def get_todos(self):
-        r = self.client.get('/todos/1')
+        r = self.client.get('/api/todos/1')
         assert r.status_code == HTTPStatus.OK, "Unexpected response code: " + str(r.status_code)

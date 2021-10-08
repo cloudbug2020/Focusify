@@ -1,12 +1,14 @@
 package com.example.focusify.usecase.todo.exception;
 
-public class TodoNotFoundException extends RuntimeException {
+import com.example.focusify.domain.exception.BusinessException;
 
-  public TodoNotFoundException() {
-    super("Todo could not be found");
-  }
+public class TodoNotFoundException extends BusinessException {
 
   public TodoNotFoundException(String message) {
-    super(message);
+    super(2, message);
+  }
+
+  public TodoNotFoundException() {
+    super(2, "Todo was not found");
   }
 }

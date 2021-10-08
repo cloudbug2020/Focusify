@@ -16,3 +16,14 @@ services:
       - POSTGRES_USER=hibernate
       - POSTGRES_PASSWORD=hibernate
       - POSTGRES_DB=hibernate_db
+
+  monitoring:
+    image: "prom/prometheus"
+    container_name: "focusify-monitoring"
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - frontend
+      - backend
