@@ -47,4 +47,4 @@ jobs:
     - name: Install Locust
       run: python3 -m pip install locust
     - name: Run Load tests
-      run: locust --config=loadtests/config/test.conf        
+      run: locust --config=loadtest/config/test.conf
