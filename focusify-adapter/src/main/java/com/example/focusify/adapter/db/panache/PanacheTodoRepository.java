@@ -8,6 +8,7 @@ import com.example.focusify.usecase.todo.exception.TodoNotFoundException;
 import com.example.focusify.usecase.todo.port.TodoRepository;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PanacheTodoRepository implements TodoRepository, PanacheRepository<TodoEntity> {
 
@@ -29,12 +30,17 @@ public class PanacheTodoRepository implements TodoRepository, PanacheRepository<
   public List<Todo> getTodosByStatus(Status status) {
     return find("status", status).stream()
         .map(a -> new Todo(a.id, a.title, a.description, a.status))
-        .toList();
+        .collect(Collectors.toList())
+        ;
   }
 
   @Override
   public List<Todo> getAllTodos() {
-    return listAll().stream().map(a -> new Todo(a.id, a.title, a.description, a.status)).toList();
+    return listAll()
+        .stream()
+        .map(a -> new Todo(a.id, a.title, a.description, a.status))
+        .collect(Collectors.toList())
+        ;
   }
 
   @Override

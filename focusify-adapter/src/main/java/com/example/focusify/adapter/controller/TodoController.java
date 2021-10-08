@@ -8,6 +8,7 @@ import com.example.focusify.usecase.todo.DeleteTodo;
 import com.example.focusify.usecase.todo.GetTodo;
 import com.example.focusify.usecase.todo.UpdateTodo;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TodoController {
 
@@ -33,7 +34,8 @@ public class TodoController {
     return getTodo.getAllTodos()
                   .stream()
                   .map(TodoWeb::toTodoWeb)
-                  .toList();
+                  .collect(Collectors.toList())
+    ;
   }
 
   public TodoWeb getTodoById(final Long id){
@@ -49,7 +51,8 @@ public class TodoController {
     return getTodo.getTodosByStatus(status)
                   .stream()
                   .map(TodoWeb::toTodoWeb)
-                  .toList();
+                  .collect(Collectors.toList())
+    ;
   }
 
   public TodoWeb updateTodo(final TodoWeb todoWeb) {
