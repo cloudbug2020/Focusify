@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "9473539b-55b1-4fc5-9208-d5496d566fe7",
-		"name": "TodoResource",
+		"name": "/api/todos",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -33,12 +33,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/todos/",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/todos/",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"todos",
@@ -67,12 +65,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/todos/1",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/todos/1",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"todos",
@@ -113,12 +109,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/todos/",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/todos/",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"todos",
@@ -156,12 +150,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/todos/",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/todos/",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"todos",
@@ -199,12 +191,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/todos/",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/api/todos/",
 					"host": [
-						"localhost"
+						"{{baseUrl}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"todos",
