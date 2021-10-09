@@ -1,6 +1,7 @@
 package com.example.focusify.application;
 
 import static com.example.focusify.application.constants.PostgreSQLTestImages.POSTGRES_TEST_IMAGE;
+import static org.testcontainers.containers.PostgreSQLContainer.POSTGRESQL_PORT;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import java.util.Collections;
@@ -9,12 +10,12 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 public class DatabaseResource implements QuarkusTestResourceLifecycleManager {
 
-  private static final PostgreSQLContainer DATABASE =
+  private static final PostgreSQLContainer<?> DATABASE =
       new PostgreSQLContainer<>(POSTGRES_TEST_IMAGE)
           .withDatabaseName("focusify_integrationtest")
           .withUsername("hibernate")
           .withPassword("hibernate")
-          .withExposedPorts(5432);
+          .withExposedPorts(POSTGRESQL_PORT);
 
   @Override
   public Map<String, String> start() {
