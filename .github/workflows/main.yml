@@ -17,10 +17,10 @@ jobs:
     - name: Build native with Maven
       run: mvn -B package -Pnative -Dquarkus.native.container-build=true
     - name: Upload target for next job
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
-        name: target
-        path: target
+        name: focusify-application
+        path: focusify-application/target
 
   deploy_to_heroku:
     name: Deploy to Heroku
@@ -31,7 +31,7 @@ jobs:
     - name: Download target from previous job
       uses: actions/download-artifact@v1
       with:
-        name: target
+        name: focusify-application
     - name: Login into Heroku
       uses: actions/heroku@master
       with:
