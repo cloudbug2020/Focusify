@@ -3,7 +3,6 @@ package com.example.focusify.application.mapper;
 import com.example.focusify.application.model.response.ErrorResponse;
 import com.example.focusify.domain.exception.BusinessException;
 import com.example.focusify.usecase.todo.exception.TodoNotFoundException;
-import com.example.focusify.usecase.todo.exception.TodoValidationException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
