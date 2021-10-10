@@ -27,3 +27,16 @@ services:
     networks:
       - frontend
       - backend
+
+  application:
+    image: "cloudbug/focusify"
+    container_name: "focusify-app"
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    environment:
+      - PORT=8080
+      - QUARKUS_POSTGRES_DATABASE_URL=jdbc:postgresql://ec2-54-217-195-234.eu-west-1.compute.amazonaws.com/d71lidh085lsc6
+      - DATABASE_USERNAME=carwcexuzbkziu
+      - DATABASE_PASSWORD=804775df812d0513a542145bf5b5d891872406db6f264aeb7b12a32c295d103f
