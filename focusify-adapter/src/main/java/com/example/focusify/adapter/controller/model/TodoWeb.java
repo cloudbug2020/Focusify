@@ -2,8 +2,10 @@ package com.example.focusify.adapter.controller.model;
 
 import com.example.focusify.domain.todo.Status;
 import com.example.focusify.domain.todo.Todo;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.util.Objects;
 
+@RegisterForReflection
 public class TodoWeb {
 
   private Long id;
