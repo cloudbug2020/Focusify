@@ -14,10 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.example.focusify.application.DatabaseResource;
 import com.example.focusify.application.constants.TestConstants;
 import com.example.focusify.application.model.request.AddTodoRequest;
-import com.example.focusify.application.model.request.DeleteTodoRequest;
 import com.example.focusify.domain.todo.Status;
 import io.quarkus.test.common.QuarkusTestResource;
-import io.quarkus.test.junit.QuarkusIntegrationTest;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -88,16 +86,11 @@ class TodoResourceTest {
   @Test
   @Order(3)
   void shouldRemoveAnItem() {
-
-    DeleteTodoRequest request = new DeleteTodoRequest();
-    request.setId(todoId);
-
     given()
         .when()
-        .body(request)
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
-        .delete(API_ENDPOINT)
+        .delete(API_ENDPOINT + "/"+todoId)
         .then()
         .statusCode(NO_CONTENT.getStatusCode())
     ;
