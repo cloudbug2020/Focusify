@@ -17,6 +17,7 @@ import com.example.focusify.application.model.request.AddTodoRequest;
 import com.example.focusify.application.model.request.DeleteTodoRequest;
 import com.example.focusify.domain.todo.Status;
 import io.quarkus.test.common.QuarkusTestResource;
+import io.quarkus.test.junit.QuarkusIntegrationTest;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -30,7 +31,7 @@ class TodoResourceTest {
 
   public static final String API_ENDPOINT = TestConstants.API_PREFIX + "/todos";
 
-  private static String todoId;
+  private static Long todoId;
 
   @Test
   void shouldNotAddInvalidRequest() {
@@ -52,7 +53,7 @@ class TodoResourceTest {
   void shouldNotGetDataOnEmptyDatabase() {
     given()
         .when()
-        .get(API_ENDPOINT + "/1")
+        .get(API_ENDPOINT + "/0")
         .then()
         .statusCode(NOT_FOUND.getStatusCode())
     ;
@@ -80,7 +81,7 @@ class TodoResourceTest {
     assertTrue(location.contains(API_ENDPOINT));
 
     String[] segments = location.split("/");
-    todoId = segments[segments.length - 1];
+    todoId = Long.valueOf(segments[segments.length - 1]);
     assertNotNull(todoId);
   }
 
@@ -89,7 +90,7 @@ class TodoResourceTest {
   void shouldRemoveAnItem() {
 
     DeleteTodoRequest request = new DeleteTodoRequest();
-    request.setId(1L);
+    request.setId(todoId);
 
     given()
         .when()
