@@ -1,9 +1,10 @@
 package com.example.focusify.application.model.response;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.util.LinkedList;
 import java.util.List;
 
+@RegisterForReflection
 public class ErrorResponse {
 
   private List<String> body;

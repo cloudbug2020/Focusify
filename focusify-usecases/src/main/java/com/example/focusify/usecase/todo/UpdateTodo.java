@@ -14,5 +14,4 @@ public class UpdateTodo {
   public Todo updateTodo(Todo todo) {
     return this.todoRepository.updateTodo(todo);
   }
-
 }

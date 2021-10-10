@@ -1,6 +1,5 @@
 package com.example.focusify.adapter.db.panache;
 
-import com.example.focusify.adapter.controller.model.TodoWeb;
 import com.example.focusify.adapter.db.panache.model.TodoEntity;
 import com.example.focusify.domain.todo.Status;
 import com.example.focusify.domain.todo.Todo;
@@ -22,25 +21,20 @@ public class PanacheTodoRepository implements TodoRepository, PanacheRepository<
     } else {
       throw new TodoNotFoundException("Todo with id=" + id + " not found");
     }
-
-
   }
 
   @Override
   public List<Todo> getTodosByStatus(Status status) {
     return find("status", status).stream()
         .map(a -> new Todo(a.id, a.title, a.description, a.status))
-        .collect(Collectors.toList())
-        ;
+        .collect(Collectors.toList());
   }
 
   @Override
   public List<Todo> getAllTodos() {
-    return listAll()
-        .stream()
+    return listAll().stream()
         .map(a -> new Todo(a.id, a.title, a.description, a.status))
-        .collect(Collectors.toList())
-        ;
+        .collect(Collectors.toList());
   }
 
   @Override
@@ -57,7 +51,7 @@ public class PanacheTodoRepository implements TodoRepository, PanacheRepository<
   @Override
   public Todo updateTodo(Todo todo) {
     final var byId = findById(todo.getId());
-    if(byId == null) {
+    if (byId == null) {
       throw new TodoNotFoundException("Todo with id=" + todo.getId() + " not found");
     }
     byId.title = todo.getTitle();

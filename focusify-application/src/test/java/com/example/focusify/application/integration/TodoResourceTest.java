@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.example.focusify.application.DatabaseResource;
 import com.example.focusify.application.constants.TestConstants;
 import com.example.focusify.application.model.request.AddTodoRequest;
-import com.example.focusify.application.model.request.DeleteTodoRequest;
 import com.example.focusify.domain.todo.Status;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
@@ -30,7 +29,7 @@ class TodoResourceTest {
 
   public static final String API_ENDPOINT = TestConstants.API_PREFIX + "/todos";
 
-  private static String todoId;
+  private static Long todoId;
 
   @Test
   void shouldNotAddInvalidRequest() {
@@ -43,19 +42,13 @@ class TodoResourceTest {
         .when()
         .post(API_ENDPOINT)
         .then()
-        .statusCode(422)
-    ;
+        .statusCode(422);
   }
 
   @Test
   @Order(1)
   void shouldNotGetDataOnEmptyDatabase() {
-    given()
-        .when()
-        .get(API_ENDPOINT + "/1")
-        .then()
-        .statusCode(NOT_FOUND.getStatusCode())
-    ;
+    given().when().get(API_ENDPOINT + "/0").then().statusCode(NOT_FOUND.getStatusCode());
   }
 
   @Test
@@ -80,26 +73,20 @@ class TodoResourceTest {
     assertTrue(location.contains(API_ENDPOINT));
 
     String[] segments = location.split("/");
-    todoId = segments[segments.length - 1];
+    todoId = Long.valueOf(segments[segments.length - 1]);
     assertNotNull(todoId);
   }
 
   @Test
   @Order(3)
   void shouldRemoveAnItem() {
-
-    DeleteTodoRequest request = new DeleteTodoRequest();
-    request.setId(1L);
-
     given()
         .when()
-        .body(request)
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
-        .delete(API_ENDPOINT)
+        .delete(API_ENDPOINT + "/" + todoId)
         .then()
-        .statusCode(NO_CONTENT.getStatusCode())
-    ;
+        .statusCode(NO_CONTENT.getStatusCode());
   }
 
   @Test
@@ -141,5 +128,4 @@ class TodoResourceTest {
   void shouldPingReadiness() {
     given().when().get("/q/health/ready").then().statusCode(OK.getStatusCode());
   }
-
 }

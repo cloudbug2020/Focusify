@@ -5,11 +5,15 @@
 This project should be a reference implementation using Clean Architecture principles. 
 The web application is provided by Java Quarkus Framework.
 
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=cloudbug2020_focusify&metric=coverage)](https://sonarcloud.io/dashboard?id=cloudbug2020_focusify)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cloudbug2020_focusify&metric=alert_status)](https://sonarcloud.io/dashboard?id=cloudbug2020_focusify)
+
 ## Tools
 
-- [Maven](https://maven.apache.org)
-- [Locust](https://locust.io)
+- [Maven](https://www.maven.apache.org)
+- [Locust](https://www.locust.io)
 - [Postman](https://www.postman.com)
+- [Docker](https://www.docker.com)
 
 ## :construction: Future Updates
 

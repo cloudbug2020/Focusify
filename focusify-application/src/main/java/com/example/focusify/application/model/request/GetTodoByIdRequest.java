@@ -32,8 +32,6 @@ public class GetTodoByIdRequest {
 
   @Override
   public String toString() {
-    return "GetTodoByIdRequest{" +
-        "id=" + id +
-        '}';
+    return "GetTodoByIdRequest{" + "id=" + id + '}';
   }
 }

@@ -20,7 +20,6 @@ public class DatabaseConnectionHealthCheck implements HealthCheck {
           quarkusConfig.updateTodo(),
           quarkusConfig.deleteTodo());
 
-
   @Override
   public HealthCheckResponse call() {
     HealthCheckResponseBuilder responseBuilder =

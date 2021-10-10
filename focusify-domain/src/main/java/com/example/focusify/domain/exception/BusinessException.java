@@ -50,9 +50,6 @@ public class BusinessException extends RuntimeException {
 
   @Override
   public String toString() {
-    return "BusinessException{" +
-        "code=" + code +
-        ", messages=" + messages +
-        '}';
+    return "BusinessException{" + "code=" + code + ", messages=" + messages + '}';
   }
 }

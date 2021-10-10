@@ -7,8 +7,4 @@ public class TodoNotFoundException extends BusinessException {
   public TodoNotFoundException(String message) {
     super(2, message);
   }
-
-  public TodoNotFoundException() {
-    super(2, "Todo was not found");
-  }
 }

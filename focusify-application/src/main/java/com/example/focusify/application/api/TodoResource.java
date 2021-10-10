@@ -3,7 +3,6 @@ package com.example.focusify.application.api;
 import com.example.focusify.adapter.controller.TodoController;
 import com.example.focusify.adapter.controller.model.TodoWeb;
 import com.example.focusify.application.model.request.AddTodoRequest;
-import com.example.focusify.application.model.request.DeleteTodoRequest;
 import com.example.focusify.application.model.request.GetTodoByStatusRequest;
 import com.example.focusify.application.model.request.UpdateTodoRequest;
 import com.example.focusify.config.quarkus.QuarkusConfig;
@@ -53,10 +52,15 @@ public class TodoResource {
   public Response addTodo(@Valid @NotNull AddTodoRequest addTodoRequest, @Context UriInfo uriInfo) {
 
     var todoWeb =
-        new TodoWeb(addTodoRequest.getTitle(), addTodoRequest.getDescription(), addTodoRequest.getStatus());
+        new TodoWeb(
+            null,
+            addTodoRequest.getTitle(),
+            addTodoRequest.getDescription(),
+            addTodoRequest.getStatus());
     var storedTodo = todoController.createTodo(todoWeb);
 
-    final URI uri = uriInfo.getAbsolutePathBuilder().path(Long.toString(storedTodo.getId())).build();
+    final URI uri =
+        uriInfo.getAbsolutePathBuilder().path(Long.toString(storedTodo.getId())).build();
 
     return Response.created(uri).entity(storedTodo).build();
   }
@@ -100,10 +104,12 @@ public class TodoResource {
       name = "timeUpdateTodo",
       description = "Times how long it takes to invoke the updateTodo method",
       unit = MetricUnits.MILLISECONDS)
-  public Response updateTodo(@Valid @NotNull UpdateTodoRequest updateTodoRequest) {
+  @Path("/{id}")
+  public Response updateTodo(
+      @Valid @NotNull UpdateTodoRequest updateTodoRequest, @NotNull @PathParam("id") Long id) {
     final TodoWeb todoWeb =
         new TodoWeb(
-            updateTodoRequest.getId(),
+            id,
             updateTodoRequest.getTitle(),
             updateTodoRequest.getDescription(),
             updateTodoRequest.getStatus());
@@ -121,8 +127,9 @@ public class TodoResource {
       name = "timeDeleteTodo",
       description = "Times how long it takes to invoke the deleteTodo method",
       unit = MetricUnits.MILLISECONDS)
-  public Response deleteTodo(@Valid @NotNull DeleteTodoRequest deleteTodoRequest) {
-    todoController.deleteTodo(deleteTodoRequest.getId());
+  @Path("/{id}")
+  public Response deleteTodo(@NotNull @PathParam("id") Long id) {
+    todoController.deleteTodo(id);
     return Response.noContent().build();
   }
 
