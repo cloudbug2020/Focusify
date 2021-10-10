@@ -11,8 +11,7 @@ import org.eclipse.microprofile.health.Liveness;
 @ApplicationScoped
 public class RestApiHealthCheck implements HealthCheck {
 
-  @Inject
-  TodoResource todoResource;
+  @Inject TodoResource todoResource;
 
   @Override
   public HealthCheckResponse call() {

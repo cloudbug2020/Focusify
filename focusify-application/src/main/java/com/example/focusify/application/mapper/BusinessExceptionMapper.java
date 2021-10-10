@@ -22,7 +22,7 @@ public class BusinessExceptionMapper implements ExceptionMapper<BusinessExceptio
   }
 
   private Map<Class<? extends BusinessException>, Function<BusinessException, Response>>
-  configureExceptionMapper() {
+      configureExceptionMapper() {
 
     final var handlerMap =
         new HashMap<Class<? extends BusinessException>, Function<BusinessException, Response>>();
@@ -34,8 +34,8 @@ public class BusinessExceptionMapper implements ExceptionMapper<BusinessExceptio
 
   private Response notFound(BusinessException businessException) {
     return Response.ok(errorResponse(businessException))
-                   .status(Status.NOT_FOUND.getStatusCode())
-                   .build();
+        .status(Status.NOT_FOUND.getStatusCode())
+        .build();
   }
 
   private ErrorResponse errorResponse(BusinessException businessException) {

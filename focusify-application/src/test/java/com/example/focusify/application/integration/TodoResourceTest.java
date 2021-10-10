@@ -42,19 +42,13 @@ class TodoResourceTest {
         .when()
         .post(API_ENDPOINT)
         .then()
-        .statusCode(422)
-    ;
+        .statusCode(422);
   }
 
   @Test
   @Order(1)
   void shouldNotGetDataOnEmptyDatabase() {
-    given()
-        .when()
-        .get(API_ENDPOINT + "/0")
-        .then()
-        .statusCode(NOT_FOUND.getStatusCode())
-    ;
+    given().when().get(API_ENDPOINT + "/0").then().statusCode(NOT_FOUND.getStatusCode());
   }
 
   @Test
@@ -90,10 +84,9 @@ class TodoResourceTest {
         .when()
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
-        .delete(API_ENDPOINT + "/"+todoId)
+        .delete(API_ENDPOINT + "/" + todoId)
         .then()
-        .statusCode(NO_CONTENT.getStatusCode())
-    ;
+        .statusCode(NO_CONTENT.getStatusCode());
   }
 
   @Test
@@ -135,5 +128,4 @@ class TodoResourceTest {
   void shouldPingReadiness() {
     given().when().get("/q/health/ready").then().statusCode(OK.getStatusCode());
   }
-
 }

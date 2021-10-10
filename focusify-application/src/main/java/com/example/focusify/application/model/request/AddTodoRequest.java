@@ -14,6 +14,5 @@ public class AddTodoRequest {
   @Length(min = 1, max = 255)
   private String description;
 
-  @NotNull
-  private Status status;
+  @NotNull private Status status;
 }

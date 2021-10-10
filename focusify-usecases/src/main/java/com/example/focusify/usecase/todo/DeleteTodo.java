@@ -13,5 +13,4 @@ public class DeleteTodo {
   public void deleteTodo(Long id) {
     this.todoRepository.deleteTodo(id);
   }
-
 }

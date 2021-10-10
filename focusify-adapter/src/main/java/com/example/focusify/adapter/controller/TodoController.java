@@ -17,8 +17,8 @@ public class TodoController {
   private final UpdateTodo updateTodo;
   private final DeleteTodo deleteTodo;
 
-  public TodoController(AddTodo addTodo, GetTodo getTodo,
-      UpdateTodo updateTodo, DeleteTodo deleteTodo) {
+  public TodoController(
+      AddTodo addTodo, GetTodo getTodo, UpdateTodo updateTodo, DeleteTodo deleteTodo) {
     this.addTodo = addTodo;
     this.getTodo = getTodo;
     this.updateTodo = updateTodo;
@@ -30,17 +30,9 @@ public class TodoController {
     return TodoWeb.toTodoWeb(addTodo.addTodo(todo));
   }
 
-  public List<TodoWeb> getAllTodos() {
-    return getTodo.getAllTodos()
-                  .stream()
-                  .map(TodoWeb::toTodoWeb)
-                  .collect(Collectors.toList())
-    ;
-  }
-
-  public TodoWeb getTodoById(final Long id){
-      var todo = getTodo.getTodoById(id);
-      return TodoWeb.toTodoWeb(todo);
+  public TodoWeb getTodoById(final Long id) {
+    var todo = getTodo.getTodoById(id);
+    return TodoWeb.toTodoWeb(todo);
   }
 
   public Long countTodos() {
@@ -48,11 +40,9 @@ public class TodoController {
   }
 
   public List<TodoWeb> getTodosByStatus(final Status status) {
-    return getTodo.getTodosByStatus(status)
-                  .stream()
-                  .map(TodoWeb::toTodoWeb)
-                  .collect(Collectors.toList())
-    ;
+    return getTodo.getTodosByStatus(status).stream()
+        .map(TodoWeb::toTodoWeb)
+        .collect(Collectors.toList());
   }
 
   public TodoWeb updateTodo(final TodoWeb todoWeb) {
@@ -63,5 +53,4 @@ public class TodoController {
   public void deleteTodo(final Long id) {
     deleteTodo.deleteTodo(id);
   }
-
 }
