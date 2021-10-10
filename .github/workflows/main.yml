@@ -15,7 +15,9 @@ jobs:
       with:
         java-version: 11
     - name: Build native with Maven
-      run: mvn -B package -Pnative -Dquarkus.native.container-build=true
+      env:
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
+      run: mvn -B package -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true -Dquarkus.container-image.group=registry.heroku.com/$HEROKU_APP -Dquarkus.container-image.name=focusify-web -Dquarkus.container-image.tag=latest
     - name: Upload target for next job
       uses: actions/upload-artifact@v2
       with:
