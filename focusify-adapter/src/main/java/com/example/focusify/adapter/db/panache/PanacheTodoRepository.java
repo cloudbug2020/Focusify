@@ -17,7 +17,7 @@ public class PanacheTodoRepository implements TodoRepository, PanacheRepository<
     final var foundTodo = findById(dbId);
 
     if (foundTodo != null) {
-      return new Todo(foundTodo.id, foundTodo.title, foundTodo.description, foundTodo.status);
+      return new Todo(id, foundTodo.getTitle(), foundTodo.getDescription(), foundTodo.getStatus());
     } else {
       throw new TodoNotFoundException("Todo with id=" + id + " not found");
     }
@@ -26,14 +26,14 @@ public class PanacheTodoRepository implements TodoRepository, PanacheRepository<
   @Override
   public List<Todo> getTodosByStatus(Status status) {
     return find("status", status).stream()
-        .map(a -> new Todo(a.id, a.title, a.description, a.status))
+        .map(dataset -> new Todo(dataset.id, dataset.getTitle(), dataset.getDescription(), dataset.getStatus()))
         .collect(Collectors.toList());
   }
 
   @Override
   public List<Todo> getAllTodos() {
     return listAll().stream()
-        .map(a -> new Todo(a.id, a.title, a.description, a.status))
+        .map(dataset -> new Todo(dataset.id, dataset.getTitle(), dataset.getDescription(), dataset.getStatus()))
         .collect(Collectors.toList());
   }
 
@@ -54,20 +54,20 @@ public class PanacheTodoRepository implements TodoRepository, PanacheRepository<
     if (byId == null) {
       throw new TodoNotFoundException("Todo with id=" + todo.getId() + " not found");
     }
-    byId.title = todo.getTitle();
-    byId.description = todo.getDescription();
-    byId.status = todo.getStatus();
-    return new Todo(byId.id, byId.title, byId.description, byId.status);
+    byId.setTitle(todo.getTitle());
+    byId.setDescription(todo.getDescription());
+    byId.setStatus(todo.getStatus());
+    return new Todo(byId.id, byId.getTitle(), byId.getDescription(), byId.getStatus());
   }
 
   @Override
   public Todo createTodo(Todo todo) {
     final TodoEntity todoEntity = new TodoEntity();
-    todoEntity.title = todo.getTitle();
-    todoEntity.description = todo.getDescription();
-    todoEntity.status = todo.getStatus();
+    todoEntity.setTitle(todo.getTitle());
+    todoEntity.setDescription(todo.getDescription());
+    todoEntity.setStatus(todo.getStatus());
     todoEntity.persist();
 
-    return new Todo(todoEntity.id, todoEntity.title, todoEntity.description, todoEntity.status);
+    return new Todo(todoEntity.id, todoEntity.getTitle(), todoEntity.getDescription(), todoEntity.getStatus());
   }
 }
