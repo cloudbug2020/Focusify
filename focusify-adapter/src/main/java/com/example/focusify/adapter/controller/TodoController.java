@@ -26,7 +26,7 @@ public class TodoController {
   }
 
   public TodoWeb createTodo(final TodoWeb todoWeb) {
-    var todo = todoWeb.toTodo(todoWeb);
+    var todo = TodoWeb.toTodo(todoWeb);
     return TodoWeb.toTodoWeb(addTodo.addTodo(todo));
   }
 
