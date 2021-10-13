@@ -14,9 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.example.focusify.application.DatabaseResource;
 import com.example.focusify.application.constants.TestConstants;
 import com.example.focusify.application.model.request.AddTodoRequest;
+import com.example.focusify.application.model.request.UpdateTodoRequest;
 import com.example.focusify.domain.todo.Status;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -27,9 +29,16 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TodoResourceTest {
 
-  public static final String API_ENDPOINT = TestConstants.API_PREFIX + "/todos";
+  private static final String API_ENDPOINT = TestConstants.API_PREFIX + "/todos";
+  public static final String UPDATED_TITLE = "Updated Title";
+  public static final String UPDATED_DESCRIPTION = "Updated Description";
+  public static final Status UPDATE_STATUS = Status.DONE;
 
   private static Long todoId;
+  private static final String DEFAULT_TITLE = "shouldAddValidRequest title";
+  private static final String DEFAULT_DESC = "shouldAddValidRequest description";
+  private static final Status DEFAULT_STATUS = Status.TODO;
+
 
   @Test
   void shouldNotAddInvalidRequest() {
@@ -55,9 +64,9 @@ class TodoResourceTest {
   @Order(2)
   void shouldAddValidRequest() {
     AddTodoRequest request = new AddTodoRequest();
-    request.setTitle("shouldAddValidRequest title");
-    request.setDescription("shouldAddValidRequest description");
-    request.setStatus(Status.TODO);
+    request.setTitle(DEFAULT_TITLE);
+    request.setDescription(DEFAULT_DESC);
+    request.setStatus(DEFAULT_STATUS);
 
     String location =
         given()
@@ -70,6 +79,7 @@ class TodoResourceTest {
             .statusCode(CREATED.getStatusCode())
             .extract()
             .header("Location");
+
     assertTrue(location.contains(API_ENDPOINT));
 
     String[] segments = location.split("/");
@@ -79,12 +89,59 @@ class TodoResourceTest {
 
   @Test
   @Order(3)
+  void shouldGetAnItem() {
+    given()
+        .header(CONTENT_TYPE, APPLICATION_JSON)
+        .header(ACCEPT, APPLICATION_JSON)
+        .when()
+        .get(API_ENDPOINT + "/"+todoId)
+        .then()
+        .statusCode(OK.getStatusCode())
+        .header(CONTENT_TYPE, APPLICATION_JSON)
+        .body("title", Is.is(DEFAULT_TITLE))
+        .body("description", Is.is(DEFAULT_DESC))
+        .body("status", Is.is(DEFAULT_STATUS.name()));
+  }
+
+  @Test
+  @Order(4)
+  void shouldUpdateAnItem() {
+    UpdateTodoRequest request = new UpdateTodoRequest();
+    request.setTitle(UPDATED_TITLE);
+    request.setDescription(UPDATED_DESCRIPTION);
+    request.setStatus(UPDATE_STATUS);
+
+    given()
+        .body(request)
+        .header(CONTENT_TYPE, APPLICATION_JSON)
+        .header(ACCEPT, APPLICATION_JSON)
+        .when()
+        .put(API_ENDPOINT + "/"+todoId)
+        .then()
+        .statusCode(OK.getStatusCode());
+
+    given()
+        .header(CONTENT_TYPE, APPLICATION_JSON)
+        .header(ACCEPT, APPLICATION_JSON)
+        .when()
+        .get(API_ENDPOINT + "/"+todoId)
+        .then()
+        .statusCode(OK.getStatusCode())
+        .header(CONTENT_TYPE, APPLICATION_JSON)
+        .body("title", Is.is(UPDATED_TITLE))
+        .body("description", Is.is(UPDATED_DESCRIPTION))
+        .body("status", Is.is(UPDATE_STATUS.name()));
+
+  }
+
+  @Test
+  @Order(5)
   void shouldRemoveAnItem() {
     given()
         .when()
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
-        .delete(API_ENDPOINT + "/" + todoId)
+        .delete(API_ENDPOINT + "/"+todoId)
         .then()
         .statusCode(NO_CONTENT.getStatusCode());
   }
