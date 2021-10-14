@@ -31,13 +31,6 @@ public class PanacheTodoRepository implements TodoRepository, PanacheRepository<
   }
 
   @Override
-  public List<Todo> getAllTodos() {
-    return listAll().stream()
-        .map(dataset -> new Todo(dataset.id, dataset.getTitle(), dataset.getDescription(), dataset.getStatus()))
-        .collect(Collectors.toList());
-  }
-
-  @Override
   public Long countTodos() {
     return count();
   }

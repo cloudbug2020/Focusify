@@ -13,11 +13,6 @@ public class ErrorResponse {
     this.body = new LinkedList<>();
   }
 
-  public ErrorResponse(String error) {
-    this();
-    this.body.add(error);
-  }
-
   public ErrorResponse(List<String> errors) {
     this.body = errors;
   }
