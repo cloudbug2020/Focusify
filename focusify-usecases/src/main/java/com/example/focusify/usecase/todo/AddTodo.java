@@ -17,7 +17,7 @@ public class AddTodo {
             .id(todo.getId())
             .title(todo.getTitle())
             .description(todo.getDescription())
-            .done(todo.getStatus())
+            .status(todo.getStatus())
             .build();
 
     return todoRepository.createTodo(todoToSave);
