@@ -11,22 +11,20 @@ import java.util.stream.Collectors;
 
 public class PanacheTodoRepository implements TodoRepository, PanacheRepository<TodoEntity> {
 
+  public static final String TODO_WITH_PROVIDED_ID_NOT_FOUND = "Todo with provided id not found.";
+
   @Override
   public Todo getTodoById(Long id) {
-    long dbId = id;
-    final var foundTodo = findById(dbId);
+    final TodoEntity todoEntity = findByIdOptional(id).orElseThrow(() -> new TodoNotFoundException(
+        TODO_WITH_PROVIDED_ID_NOT_FOUND));
 
-    if (foundTodo != null) {
-      return new Todo(id, foundTodo.getTitle(), foundTodo.getDescription(), foundTodo.getStatus());
-    } else {
-      throw new TodoNotFoundException("Todo with id=" + id + " not found");
-    }
+    return Todo.builder().id(todoEntity.id).title(todoEntity.getTitle()).description(todoEntity.getDescription()).status(todoEntity.getStatus()).build();
   }
 
   @Override
   public List<Todo> getTodosByStatus(Status status) {
     return find("status", status).stream()
-        .map(dataset -> new Todo(dataset.id, dataset.getTitle(), dataset.getDescription(), dataset.getStatus()))
+        .map(dataset -> Todo.builder().id(dataset.id).title(dataset.getTitle()).description(dataset.getDescription()).status(dataset.getStatus()).build())
         .collect(Collectors.toList());
   }
 
@@ -43,14 +41,12 @@ public class PanacheTodoRepository implements TodoRepository, PanacheRepository<
 
   @Override
   public Todo updateTodo(Todo todo) {
-    final var byId = findById(todo.getId());
-    if (byId == null) {
-      throw new TodoNotFoundException("Todo with id=" + todo.getId() + " not found");
-    }
-    byId.setTitle(todo.getTitle());
-    byId.setDescription(todo.getDescription());
-    byId.setStatus(todo.getStatus());
-    return new Todo(byId.id, byId.getTitle(), byId.getDescription(), byId.getStatus());
+    final var todoEntity = findByIdOptional(todo.getId()).orElseThrow(() -> new TodoNotFoundException(TODO_WITH_PROVIDED_ID_NOT_FOUND));
+    todoEntity.setTitle(todo.getTitle());
+    todoEntity.setDescription(todo.getDescription());
+    todoEntity.setStatus(todo.getStatus());
+
+    return Todo.builder().id(todoEntity.id).title(todoEntity.getTitle()).description(todoEntity.getDescription()).status(todoEntity.getStatus()).build();
   }
 
   @Override
