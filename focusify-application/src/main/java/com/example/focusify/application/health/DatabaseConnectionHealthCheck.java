@@ -1,7 +1,7 @@
 package com.example.focusify.application.health;
 
 import com.example.focusify.adapter.controller.TodoController;
-import com.example.focusify.config.quarkus.QuarkusConfig;
+import com.example.focusify.config.quarkus.ApplicationConfig;
 import javax.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
@@ -12,7 +12,7 @@ import org.eclipse.microprofile.health.Readiness;
 @ApplicationScoped
 public class DatabaseConnectionHealthCheck implements HealthCheck {
 
-  private final QuarkusConfig quarkusConfig = new QuarkusConfig();
+  private final ApplicationConfig quarkusConfig = new ApplicationConfig();
   private final TodoController todoController =
       new TodoController(
           quarkusConfig.addTodo(),

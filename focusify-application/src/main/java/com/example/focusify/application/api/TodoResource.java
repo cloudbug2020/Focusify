@@ -5,7 +5,7 @@ import com.example.focusify.adapter.controller.model.TodoWeb;
 import com.example.focusify.application.model.request.AddTodoRequest;
 import com.example.focusify.application.model.request.GetTodoByStatusRequest;
 import com.example.focusify.application.model.request.UpdateTodoRequest;
-import com.example.focusify.config.quarkus.QuarkusConfig;
+import com.example.focusify.config.quarkus.ApplicationConfig;
 import java.net.URI;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -32,7 +32,7 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
 @Consumes(MediaType.APPLICATION_JSON)
 public class TodoResource {
 
-  private final QuarkusConfig quarkusConfig = new QuarkusConfig();
+  private final ApplicationConfig quarkusConfig = new ApplicationConfig();
   private final TodoController todoController =
       new TodoController(
           quarkusConfig.addTodo(),

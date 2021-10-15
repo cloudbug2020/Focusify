@@ -8,4 +8,13 @@ create table todo
     title varchar(255)
 );
 
+create table users
+(
+    id bigint not null
+        constraint users_pkey
+            primary key,
+    email varchar(255),
+    username varchar(255)
+);
+
 create sequence hibernate_sequence;

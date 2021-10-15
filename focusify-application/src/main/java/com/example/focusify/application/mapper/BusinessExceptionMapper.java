@@ -3,6 +3,7 @@ package com.example.focusify.application.mapper;
 import com.example.focusify.application.model.response.ErrorResponse;
 import com.example.focusify.domain.exception.BusinessException;
 import com.example.focusify.usecase.todo.exception.TodoNotFoundException;
+import com.example.focusify.usecase.user.exception.UserNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -28,6 +29,7 @@ public class BusinessExceptionMapper implements ExceptionMapper<BusinessExceptio
         new HashMap<Class<? extends BusinessException>, Function<BusinessException, Response>>();
 
     handlerMap.put(TodoNotFoundException.class, this::notFound);
+    handlerMap.put(UserNotFoundException.class, this::notFound);
 
     return handlerMap;
   }
