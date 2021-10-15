@@ -4,8 +4,6 @@ import static java.util.Collections.singletonList;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
