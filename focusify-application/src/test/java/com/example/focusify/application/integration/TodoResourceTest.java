@@ -35,6 +35,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 class TodoResourceTest {
 
   private static final String API_ENDPOINT = TestConstants.API_PREFIX + "/todos";
+
   public static final String UPDATED_TITLE = "Updated Title";
   public static final String UPDATED_DESCRIPTION = "Updated Description";
   public static final Status UPDATE_STATUS = Status.DONE;
@@ -43,7 +44,6 @@ class TodoResourceTest {
   private static final String DEFAULT_TITLE = "shouldAddValidRequest title";
   private static final String DEFAULT_DESC = "shouldAddValidRequest description";
   private static final Status DEFAULT_STATUS = Status.TODO;
-
 
   @Test
   void shouldNotAddInvalidRequest() {
@@ -174,43 +174,4 @@ class TodoResourceTest {
         .statusCode(NO_CONTENT.getStatusCode());
   }
 
-  @Test
-  @Order(9)
-  void shouldPingOpenAPI() {
-    given()
-        .header(ACCEPT, APPLICATION_JSON)
-        .when()
-        .get("/q/openapi")
-        .then()
-        .statusCode(OK.getStatusCode());
-  }
-
-  @Test
-  @Order(9)
-  void shouldPingMetrics() {
-    given()
-        .header(ACCEPT, APPLICATION_JSON)
-        .when()
-        .get("/q/metrics/application")
-        .then()
-        .statusCode(OK.getStatusCode());
-  }
-
-  @Test
-  @Order(9)
-  void shouldPingSwaggerUI() {
-    given().when().get("/q/swagger-ui").then().statusCode(OK.getStatusCode());
-  }
-
-  @Test
-  @Order(9)
-  void shouldPingHealthCheck() {
-    given().when().get("/q/health/live").then().statusCode(OK.getStatusCode());
-  }
-
-  @Test
-  @Order(9)
-  void shouldPingReadiness() {
-    given().when().get("/q/health/ready").then().statusCode(OK.getStatusCode());
-  }
 }
