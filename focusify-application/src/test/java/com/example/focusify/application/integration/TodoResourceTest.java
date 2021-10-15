@@ -14,10 +14,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.example.focusify.application.DatabaseResource;
 import com.example.focusify.application.constants.TestConstants;
 import com.example.focusify.application.model.request.AddTodoRequest;
+import com.example.focusify.application.model.request.GetTodoByStatusRequest;
 import com.example.focusify.application.model.request.UpdateTodoRequest;
 import com.example.focusify.domain.todo.Status;
+import com.example.focusify.domain.todo.Todo;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import java.util.Arrays;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -101,6 +106,29 @@ class TodoResourceTest {
         .body("title", Is.is(DEFAULT_TITLE))
         .body("description", Is.is(DEFAULT_DESC))
         .body("status", Is.is(DEFAULT_STATUS.name()));
+  }
+
+  @Test
+  @Order(3)
+  void shouldGetOnlyItemsWithStatusTodo() {
+
+    GetTodoByStatusRequest request = new GetTodoByStatusRequest();
+    request.setStatus(Status.TODO);
+
+    Todo[] todos = given()
+        .header(CONTENT_TYPE, APPLICATION_JSON)
+        .header(ACCEPT, APPLICATION_JSON)
+        .body(request)
+        .when()
+        .get(API_ENDPOINT)
+        .then()
+        .statusCode(OK.getStatusCode())
+        .header(CONTENT_TYPE, APPLICATION_JSON)
+        .extract()
+        .as(Todo[].class);
+
+    assertTrue(Arrays.stream(todos).allMatch(a -> a.getStatus().equals(Status.TODO)));
+
   }
 
   @Test

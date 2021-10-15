@@ -133,7 +133,10 @@ public class TodoResource {
     return Response.noContent().build();
   }
 
+  @GET
+  @Path("/hello")
+  @Produces(MediaType.TEXT_PLAIN)
   public String hello() {
-    return "hello";
+    return "Hello, Todo Resource";
   }
 }

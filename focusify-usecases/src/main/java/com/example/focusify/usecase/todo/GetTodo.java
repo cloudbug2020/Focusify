@@ -13,10 +13,6 @@ public class GetTodo {
     this.todoRepository = todoRepository;
   }
 
-  public List<Todo> getAllTodos() {
-    return todoRepository.getAllTodos();
-  }
-
   public Todo getTodoById(Long id) {
     return todoRepository.getTodoById(id);
   }

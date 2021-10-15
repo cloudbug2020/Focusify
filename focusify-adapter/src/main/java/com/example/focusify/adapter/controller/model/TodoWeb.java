@@ -23,7 +23,7 @@ public class TodoWeb {
         .id(todoWeb.getId())
         .title(todoWeb.getTitle())
         .description(todoWeb.getDescription())
-        .done(todoWeb.getStatus())
+        .status(todoWeb.getStatus())
         .build();
   }
 

@@ -10,8 +10,6 @@ public interface TodoRepository {
 
   List<Todo> getTodosByStatus(Status status);
 
-  List<Todo> getAllTodos();
-
   Long countTodos();
 
   void deleteTodo(Long id);

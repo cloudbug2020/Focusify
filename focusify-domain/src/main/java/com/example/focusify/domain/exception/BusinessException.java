@@ -4,8 +4,15 @@ import static java.util.Collections.singletonList;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false)
+@ToString(callSuper = false)
 public class BusinessException extends RuntimeException {
 
   private final int code;
@@ -21,35 +28,5 @@ public class BusinessException extends RuntimeException {
     super(String.join(", ", messages));
     this.code = code;
     this.messages = messages;
-  }
-
-  public int getCode() {
-    return code;
-  }
-
-  public List<String> getMessages() {
-    return messages;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    BusinessException that = (BusinessException) o;
-    return code == that.code && Objects.equals(messages, that.messages);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(code, messages);
-  }
-
-  @Override
-  public String toString() {
-    return "BusinessException{" + "code=" + code + ", messages=" + messages + '}';
   }
 }
