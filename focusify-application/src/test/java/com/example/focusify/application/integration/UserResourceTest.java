@@ -12,10 +12,8 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.focusify.application.DatabaseResource;
-import com.example.focusify.application.AuthenticationProviderResource;
 import com.example.focusify.application.constants.TestConstants;
 import com.example.focusify.application.model.request.AddUserRequest;
-import com.example.focusify.application.model.request.AddTodoRequest;
 import com.example.focusify.application.model.request.UpdateUserRequest;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
