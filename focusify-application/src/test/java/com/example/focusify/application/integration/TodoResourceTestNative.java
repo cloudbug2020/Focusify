@@ -1,6 +1,6 @@
 package com.example.focusify.application.integration;
 
-import io.quarkus.test.junit.NativeImageTest;
+import io.quarkus.test.junit.QuarkusIntegrationTest;
 
-@NativeImageTest
+@QuarkusIntegrationTest
 public class TodoResourceTestNative extends TodoResourceTest {}

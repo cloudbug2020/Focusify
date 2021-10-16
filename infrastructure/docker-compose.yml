@@ -1,4 +1,4 @@
-version: "3"
+version: "3.2"
 
 networks:
   frontend:
@@ -17,6 +17,18 @@ services:
       - POSTGRES_PASSWORD=hibernate
       - POSTGRES_DB=hibernate_db
 
+  security:
+    image: "quay.io/keycloak/keycloak:15.0.2"
+    container_name: "focusify-security"
+    ports:
+      - "8180:8080"
+      - "8543:8443"
+    networks:
+      - backend
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+
   monitoring:
     image: "prom/prometheus"
     container_name: "focusify-monitoring"
@@ -27,16 +39,3 @@ services:
     networks:
       - frontend
       - backend
-
-  application:
-    image: "cloudbug/focusify"
-    container_name: "focusify-app"
-    ports:
-      - "8080:8080"
-    networks:
-      - backend
-    environment:
-      - PORT=8080
-      - QUARKUS_POSTGRES_DATABASE_URL=jdbc:postgresql://localhost:5432/hibernate_db
-      - DATABASE_USERNAME=hibernate
-      - DATABASE_PASSWORD=hibernate

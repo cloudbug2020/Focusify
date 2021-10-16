@@ -1,5 +1,6 @@
 package com.example.focusify.application.integration;
 
+import static io.quarkus.test.keycloak.server.KeycloakTestResourceLifecycleManager.getAccessToken;
 import static io.restassured.RestAssured.given;
 import static io.smallrye.common.constraint.Assert.assertTrue;
 import static javax.ws.rs.core.HttpHeaders.ACCEPT;
@@ -20,8 +21,7 @@ import com.example.focusify.domain.todo.Status;
 import com.example.focusify.domain.todo.Todo;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
+import io.quarkus.test.keycloak.server.KeycloakTestResourceLifecycleManager;
 import java.util.Arrays;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.MethodOrderer;
@@ -31,6 +31,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 @QuarkusTest
 @QuarkusTestResource(DatabaseResource.class)
+@QuarkusTestResource(KeycloakTestResourceLifecycleManager.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TodoResourceTest {
 
@@ -53,6 +54,8 @@ class TodoResourceTest {
         .body(request)
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
+        .auth()
+        .oauth2(getAccessToken("alice"))
         .when()
         .post(API_ENDPOINT)
         .then()
@@ -62,7 +65,13 @@ class TodoResourceTest {
   @Test
   @Order(1)
   void shouldNotGetDataOnEmptyDatabase() {
-    given().when().get(API_ENDPOINT + "/0").then().statusCode(NOT_FOUND.getStatusCode());
+    given()
+        .auth()
+        .oauth2(getAccessToken("alice"))
+        .when()
+        .get(API_ENDPOINT + "/0")
+        .then()
+        .statusCode(NOT_FOUND.getStatusCode());
   }
 
   @Test
@@ -78,6 +87,8 @@ class TodoResourceTest {
             .body(request)
             .header(CONTENT_TYPE, APPLICATION_JSON)
             .header(ACCEPT, APPLICATION_JSON)
+            .auth()
+            .oauth2(getAccessToken("alice"))
             .when()
             .post(API_ENDPOINT)
             .then()
@@ -98,8 +109,10 @@ class TodoResourceTest {
     given()
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
+        .auth()
+        .oauth2(getAccessToken("alice"))
         .when()
-        .get(API_ENDPOINT + "/"+todoId)
+        .get(API_ENDPOINT + "/" + todoId)
         .then()
         .statusCode(OK.getStatusCode())
         .header(CONTENT_TYPE, APPLICATION_JSON)
@@ -115,20 +128,22 @@ class TodoResourceTest {
     GetTodoByStatusRequest request = new GetTodoByStatusRequest();
     request.setStatus(Status.TODO);
 
-    Todo[] todos = given()
-        .header(CONTENT_TYPE, APPLICATION_JSON)
-        .header(ACCEPT, APPLICATION_JSON)
-        .body(request)
-        .when()
-        .get(API_ENDPOINT)
-        .then()
-        .statusCode(OK.getStatusCode())
-        .header(CONTENT_TYPE, APPLICATION_JSON)
-        .extract()
-        .as(Todo[].class);
+    Todo[] todos =
+        given()
+            .header(CONTENT_TYPE, APPLICATION_JSON)
+            .header(ACCEPT, APPLICATION_JSON)
+            .auth()
+            .oauth2(getAccessToken("alice"))
+            .body(request)
+            .when()
+            .get(API_ENDPOINT)
+            .then()
+            .statusCode(OK.getStatusCode())
+            .header(CONTENT_TYPE, APPLICATION_JSON)
+            .extract()
+            .as(Todo[].class);
 
     assertTrue(Arrays.stream(todos).allMatch(a -> a.getStatus().equals(Status.TODO)));
-
   }
 
   @Test
@@ -143,8 +158,10 @@ class TodoResourceTest {
         .body(request)
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
+        .auth()
+        .oauth2(getAccessToken("alice"))
         .when()
-        .put(API_ENDPOINT + "/"+todoId)
+        .put(API_ENDPOINT + "/" + todoId)
         .then()
         .statusCode(OK.getStatusCode());
 
@@ -152,14 +169,15 @@ class TodoResourceTest {
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
         .when()
-        .get(API_ENDPOINT + "/"+todoId)
+        .auth()
+        .oauth2(getAccessToken("alice"))
+        .get(API_ENDPOINT + "/" + todoId)
         .then()
         .statusCode(OK.getStatusCode())
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .body("title", Is.is(UPDATED_TITLE))
         .body("description", Is.is(UPDATED_DESCRIPTION))
         .body("status", Is.is(UPDATE_STATUS.name()));
-
   }
 
   @Test
@@ -169,9 +187,10 @@ class TodoResourceTest {
         .when()
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
-        .delete(API_ENDPOINT + "/"+todoId)
+        .auth()
+        .oauth2(getAccessToken("alice"))
+        .delete(API_ENDPOINT + "/" + todoId)
         .then()
         .statusCode(NO_CONTENT.getStatusCode());
   }
-
 }

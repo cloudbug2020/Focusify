@@ -112,4 +112,11 @@ public class UserResource {
     this.userController.deleteUser(id);
     return Response.noContent().build();
   }
+
+  @GET
+  @Path("/hello")
+  @Produces(MediaType.TEXT_PLAIN)
+  public String hello() {
+    return "Hello, User Resource";
+  }
 }

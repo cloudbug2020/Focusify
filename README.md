@@ -14,19 +14,30 @@ The web application is provided by Java Quarkus Framework.
 - [Locust](https://www.locust.io)
 - [Postman](https://www.postman.com)
 - [Docker](https://www.docker.com)
+- [Keycloak](https://www.keycloak.org)
 
 ## :construction: Future Updates
 
-- [ ] add users
-    - [ ] user use cases
+- [x] add users
+    - [x] user use cases
     - [ ] new datasource "users"
-    - [ ] user api
+    - [x] user api
 - [ ] add auth
-    - [ ] secured REST resources
-    - [ ] combine with user resource and datasource
-    - [ ] use OAuth
+    - [x] secured REST resources
+    - [x] combine with user resource and datasource
+    - [x] use OAuth2
 
 ## :wrench: Infrastructure
+
+### Environment Variables
+
+| Variable | Description | Default Value |
+| :---: | :---: | :---: |
+| **QUARKUS_POSTGRES_DATABASE_URL** | JDBC-Connection-String to postgresql datasource | jdbc:postgresql://localhost:5432/hibernate_db |
+| **DATABASE_USERNAME** | username of user to use for provided datasource | hibernate |
+| **DATABASE_PASSWORD** | password of user to use for provided datasource | hibernate |
+| **AUTH_SERVER_URL** | URL to keycloak auth server | http://localhost:8180/auth/realms/focusify |
+| **CLIENT_ID** | keycloak-configured client identifier | focusify-backend |
 
 ### Docker-Compose
 
@@ -34,6 +45,11 @@ If you haven't installed **Docker** yet, then follow this guide:
 https://docs.docker.com/get-docker/
 
 > /infrastructure/docker/docker-compose.yml
+
+### Keycloak
+The integrationtests are using KeycloakTestResourceLifecycleManager to start internal
+keycloak docker container, which means no special configuration needed.  
+To configure your own keycloak realm please consult [keycloak documentation](https://www.keycloak.org/getting-started/getting-started-docker)
 
 ### Loadtests
 
