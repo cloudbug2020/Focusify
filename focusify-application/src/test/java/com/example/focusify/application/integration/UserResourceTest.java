@@ -1,5 +1,6 @@
 package com.example.focusify.application.integration;
 
+import static io.quarkus.test.keycloak.server.KeycloakTestResourceLifecycleManager.getAccessToken;
 import static io.restassured.RestAssured.given;
 import static io.smallrye.common.constraint.Assert.assertTrue;
 import static javax.ws.rs.core.HttpHeaders.ACCEPT;
@@ -9,7 +10,7 @@ import static javax.ws.rs.core.Response.Status.CREATED;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.example.focusify.application.DatabaseResource;
 import com.example.focusify.application.constants.TestConstants;
@@ -17,6 +18,7 @@ import com.example.focusify.application.model.request.AddUserRequest;
 import com.example.focusify.application.model.request.UpdateUserRequest;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.keycloak.server.KeycloakTestResourceLifecycleManager;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 @QuarkusTest
 @QuarkusTestResource(DatabaseResource.class)
+@QuarkusTestResource(KeycloakTestResourceLifecycleManager.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserResourceTest {
 
@@ -39,7 +42,13 @@ class UserResourceTest {
   @Test
   @Order(1)
   void shouldNotGetDataOnEmptyDatabase() {
-    given().when().get(API_ENDPOINT + "/0").then().statusCode(NOT_FOUND.getStatusCode());
+    given()
+        .auth()
+        .oauth2(getAccessToken("alice"))
+        .when()
+        .get(API_ENDPOINT + "/0")
+        .then()
+        .statusCode(NOT_FOUND.getStatusCode());
   }
 
   @Test
@@ -54,6 +63,8 @@ class UserResourceTest {
             .body(request)
             .header(CONTENT_TYPE, APPLICATION_JSON)
             .header(ACCEPT, APPLICATION_JSON)
+            .auth()
+            .oauth2(getAccessToken("alice"))
             .when()
             .post(API_ENDPOINT)
             .then()
@@ -74,8 +85,10 @@ class UserResourceTest {
     given()
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
+        .auth()
+        .oauth2(getAccessToken("alice"))
         .when()
-        .get(API_ENDPOINT + "/"+userId)
+        .get(API_ENDPOINT + "/" + userId)
         .then()
         .statusCode(OK.getStatusCode())
         .header(CONTENT_TYPE, APPLICATION_JSON)
@@ -94,32 +107,37 @@ class UserResourceTest {
         .body(request)
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
+        .auth()
+        .oauth2(getAccessToken("alice"))
         .when()
-        .put(API_ENDPOINT + "/"+userId)
+        .put(API_ENDPOINT + "/" + userId)
         .then()
         .statusCode(OK.getStatusCode());
 
     given()
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
+        .auth()
+        .oauth2(getAccessToken("alice"))
         .when()
-        .get(API_ENDPOINT + "/"+userId)
+        .get(API_ENDPOINT + "/" + userId)
         .then()
         .statusCode(OK.getStatusCode())
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .body("username", Is.is(UPDATED_USERNAME))
         .body("email", Is.is(UPDATED_EMAIL));
-
   }
 
   @Test
   @Order(5)
   void shouldRemoveAnItem() {
     given()
+        .auth()
+        .oauth2(getAccessToken("alice"))
         .when()
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
-        .delete(API_ENDPOINT + "/"+userId)
+        .delete(API_ENDPOINT + "/" + userId)
         .then()
         .statusCode(NO_CONTENT.getStatusCode());
   }
@@ -134,10 +152,11 @@ class UserResourceTest {
         .body(request)
         .header(CONTENT_TYPE, APPLICATION_JSON)
         .header(ACCEPT, APPLICATION_JSON)
+        .auth()
+        .oauth2(getAccessToken("alice"))
         .when()
         .post(API_ENDPOINT)
         .then()
         .statusCode(422);
   }
-
 }

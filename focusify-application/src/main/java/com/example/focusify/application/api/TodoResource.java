@@ -8,6 +8,7 @@ import com.example.focusify.application.model.request.UpdateTodoRequest;
 import com.example.focusify.config.quarkus.ApplicationConfig;
 import java.net.URI;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -42,6 +43,7 @@ public class TodoResource {
 
   @POST
   @Transactional
+  @RolesAllowed("user")
   @Counted(
       name = "countAddTodo",
       description = "Counts how many times the addTodo method has been invoked")
@@ -67,6 +69,7 @@ public class TodoResource {
 
   @GET
   @Path("/{id}")
+  @RolesAllowed("user")
   @Counted(
       name = "countGetTodoById",
       description = "Counts how many times the getTodoById method has been invoked")
@@ -81,6 +84,7 @@ public class TodoResource {
   }
 
   @GET
+  @RolesAllowed("user")
   @Counted(
       name = "countGetTodosByStatus",
       description = "Counts how many times the getTodosByStatus method has been invoked")
@@ -97,6 +101,7 @@ public class TodoResource {
 
   @PUT
   @Transactional
+  @RolesAllowed("user")
   @Counted(
       name = "countUpdateTodo",
       description = "Counts how many times the updateTodo method has been invoked")
@@ -120,6 +125,7 @@ public class TodoResource {
 
   @DELETE
   @Transactional
+  @RolesAllowed("user")
   @Counted(
       name = "countDeleteTodo",
       description = "Counts how many times the deleteTodo method has been invoked")
