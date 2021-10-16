@@ -8,28 +8,14 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 public class PanacheUserRepository implements UserRepository, PanacheRepository<UserEntity> {
 
-  public static final String USER_WITH_PROVIDED_EMAIL_NOT_FOUND =
-      "User with provided email not found.";
+  public static final String USER_WITH_PROVIDED_EMAIL_NOT_FOUND = "User with provided email not found.";
+  public static final String USER_WITH_PROVIDED_ID_NOT_FOUND = "User with provided id not found.";
 
   @Override
   public User findUserById(Long id) {
     final UserEntity userEntity =
         findByIdOptional(id)
-            .orElseThrow(() -> new UserNotFoundException(USER_WITH_PROVIDED_EMAIL_NOT_FOUND));
-    return User.builder()
-        .id(userEntity.id)
-        .username(userEntity.getUsername())
-        .email(userEntity.getEmail())
-        .build();
-  }
-
-  @Override
-  public User findUserByEmail(String email) {
-    final UserEntity userEntity =
-        find("email", email)
-            .firstResultOptional()
-            .orElseThrow(() -> new UserNotFoundException(USER_WITH_PROVIDED_EMAIL_NOT_FOUND));
-
+            .orElseThrow(() -> new UserNotFoundException(USER_WITH_PROVIDED_ID_NOT_FOUND));
     return User.builder()
         .id(userEntity.id)
         .username(userEntity.getUsername())
@@ -56,7 +42,7 @@ public class PanacheUserRepository implements UserRepository, PanacheRepository<
   public User updateUser(User user) {
     final UserEntity userEntity =
         findByIdOptional(user.getId())
-            .orElseThrow(() -> new UserNotFoundException(USER_WITH_PROVIDED_EMAIL_NOT_FOUND));
+            .orElseThrow(() -> new UserNotFoundException(USER_WITH_PROVIDED_ID_NOT_FOUND));
     userEntity.setEmail(user.getEmail());
     userEntity.setUsername(user.getUsername());
 
@@ -71,7 +57,7 @@ public class PanacheUserRepository implements UserRepository, PanacheRepository<
   public void deleteUser(Long id) {
     final UserEntity userEntity =
         findByIdOptional(id)
-            .orElseThrow(() -> new UserNotFoundException(USER_WITH_PROVIDED_EMAIL_NOT_FOUND));
+            .orElseThrow(() -> new UserNotFoundException(USER_WITH_PROVIDED_ID_NOT_FOUND));
     userEntity.delete();
   }
 }
